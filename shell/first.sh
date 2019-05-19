@@ -9,4 +9,6 @@ ls -l /home
 pwd
 
 
+DIR=/home
 
+ls -l ${DIR}
