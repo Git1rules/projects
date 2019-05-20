@@ -9,7 +9,7 @@ class cbaMath
 		           
               cbaMath a=new cbaMath();
 
-	int w =	a.getFibbNumber(0);
+	int w =	a.getFibbNumber(6);
         System.out.println(w);        
         
 
