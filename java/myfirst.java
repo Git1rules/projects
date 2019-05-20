@@ -7,7 +7,11 @@ public class myfirst
  
    }
 
+   myfirst()
+   {
 
+
+   }
 
 }
 
