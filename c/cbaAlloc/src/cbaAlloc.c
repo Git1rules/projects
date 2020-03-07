@@ -1,11 +1,10 @@
 /* Author:	Stephen Alexandrov
    Date  :	10-17-2019
-   
 */
 
 #include <cbaAlloc.h>
 
-
+// passing the array address and the number of items
 int allocateIntArray(int size,int** array)
 {
 	*array =(int*)malloc(size * sizeof(int));
@@ -17,6 +16,7 @@ int allocateIntArray(int size,int** array)
 	}
  return 0;
 }
+// Allocation a single string
 int allocateString(int size,char** array)
 {
 	int retcode=-1;
@@ -28,6 +28,7 @@ return retcode;
 
 }
 
+// Allocating an array of strings on the heap
 int allocateArrayOfStrings(int size,int stringLength,char*** array)
 {
 	int retcode=-1;
@@ -47,7 +48,7 @@ int allocateArrayOfStrings(int size,int stringLength,char*** array)
 	if(*array != 0) retcode=0;
  return retcode;
 }
-
+// Freeing the memory on the heap
 int deallocateIntArray(int size,int** array)
 {
   int* locArray = *array;
