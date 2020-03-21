@@ -1,0 +1,91 @@
+#!/usr/local/bin/python3
+
+
+import smtplib
+import mimetypes
+from email.mime.multipart import MIMEMultipart
+from email import encoders
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
+from email.mime.audio import MIMEAudio
+from email.mime.base  import MIMEBase
+from email.message import Message
+from email.mime.message import MIMEMessage
+from iniFileReader import iniFileReader
+
+fileName='sendmail.ini'
+
+reader = iniFileReader(fileName)
+
+
+#message info
+
+
+
+
+try:
+	msg= MIMEMultipart()
+	msg["From"] = reader.username 
+	msg["To"] = ",".join(reader.recipients) 
+	msg["Subject"]=reader.subject
+
+	#BODY
+	body=MIMEText(reader.body);
+	msg.attach(body)
+	
+        # IF THERE ARE ATTACHMENTS deal with them here
+	for fileToSend in reader.attachments:
+		if(len(reader.attachments)==0):
+		    break
+		#there is one ore more ATTACHMENTs
+		ctype,encoding = mimetypes.guess_type(fileToSend)
+		if ctype is None or encoding is not None:
+			ctype = "application/octet-stream"
+
+
+		maintype, subtype = ctype.split("/",1)
+		
+		
+		if maintype == "text":
+			fp=open(fileToSend)
+			attachment=MIMEText(fp.read(),_subtype=subtype)
+			fp.close()
+
+		if maintype == "image":
+			fp=open(fileToSend,"rb")
+			attachment=MIMEImage(fp.read(),_subtype=subtype)
+			fp.close()
+
+		if maintype == "audio":
+			fp=open(fileToSend,"rb")
+			attachment=MIMEAudio(fp.read(),_subtype=subtype)
+			fp.close()
+		else:
+			fp=open(fileToSend,"rb")
+			attachment=MIMEBase(maintype,subtype)
+			attachment.set_payload(fp.read())
+			fp.close()
+			encoders.encode_base64(attachment)
+			
+
+
+
+		attachment.add_header("Content-Disposition","attachment",filename=fileToSend)
+		msg.attach(attachment)	
+
+
+
+
+	# SMPT server info
+
+	s = smtplib.SMTP(host=reader.smtphost,port=reader.port)
+	s.starttls()
+	s.login(reader.username,reader.password)
+	s.sendmail(reader.username,reader.recipients,msg.as_string())
+	s.quit()
+
+	print('Successfully sent email')
+
+except SMTPException:
+	print('Error: unable to send email')
+
