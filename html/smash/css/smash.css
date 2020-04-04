@@ -1,0 +1,18 @@
+    body{
+    background-image: url(/img/BG.png);
+    background-size: 100% 100%;
+    }
+    
+    div.transbox {
+    margin: 30px;
+    background-color: #cececec2;
+    border: 1px solid black;
+    opacity: 0.9;
+    }
+
+    div.transbox p {
+    margin: 5%;
+    font-weight: bold;
+    color: #000000;
+    opacity: 1;
+    }
